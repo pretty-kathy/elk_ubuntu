@@ -1,0 +1,27 @@
+---
+- name: Include variables
+  include_vars:
+    file: ../../vars.yml
+    
+- name: Download Logstash Deb Package
+  get_url:
+    url: "{{ logstash_url }}{{logstash_version }}.deb"
+    dest: "{{ download }}"
+  when: ansible_facts['distribution']=="Ubuntu"
+
+- name: Install Logstash Deb Package
+  become: yes
+  apt:
+    deb: "{{ download }}/{{logstash_version }}.deb"
+  when: ansible_facts['distribution']=="Ubuntu"
+
+- name: Create Logstash Pipeline File
+  template:
+    src: templates/logstash.main.conf.j2
+    dest: /etc/logstash/conf.d/main.conf
+
+- name: Start Logstash Service
+  become: yes
+  service:
+    name: logstash
+    state: started

@@ -1,0 +1,22 @@
+---
+- name: Include variables
+  include_vars:
+    file: ../../vars.yml
+
+- name: configure elasticsearch
+  template:
+    src: templates/elastic_master.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    owner: root
+    group: elasticsearch
+    mode: 0660
+  become: yes
+  register: elasticsearch_configuration
+
+- name: add elasticsearch service to onboot
+  service: name=elasticsearch enabled=yes
+  become: yes
+
+- name: start elasticsearch service
+  service: name=elasticsearch state=started
+  become: yes

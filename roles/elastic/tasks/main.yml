@@ -1,0 +1,35 @@
+---
+- name: Include variables
+  include_vars:
+    file: ../../vars.yml
+
+- name: add opendistroforelastic repository keys
+  apt_key:
+    url: "{{ opendistro_apt_key }}" 
+    state: present
+  become: yes
+
+- name: add opendistro elastic repository
+  apt_repository:
+    repo: deb "{{ opendistro_apt }}" stable main
+    state: present
+    filename: opendistroforelasticsearch.list
+  become: yes
+
+- name: install Elasticsearch OSS
+  apt:
+    deb: "{{ elastic_oss_deb }}" 
+
+- name: install opendistroforelasticsearch
+  apt:
+    name: opendistroforelasticsearch
+    update_cache: yes
+  become: yes
+
+- name: add elasticsearch service to onboot
+  service: name=elasticsearch enabled=yes
+  become: yes
+
+- name: start elasticsearch service
+  service: name=elasticsearch state=started
+  become: yes  

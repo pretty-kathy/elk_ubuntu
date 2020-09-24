@@ -1,0 +1,44 @@
+---
+- name: Include variables
+  include_vars:
+    file: ../../vars.yml
+
+- name: add opendistroforelastic repository keys
+  apt_key:
+    url: "{{ opendistro_apt_key }}"
+    state: present
+  become: yes
+
+- name: add opendistro elastic repository
+  apt_repository:
+    repo: deb "{{ opendistro_apt }}" stable main
+    state: present
+    filename: opendistroforelasticsearch.list
+  become: yes
+
+- name: install opendistroforelasticsearch-kibana
+  apt:
+    name: opendistroforelasticsearch-kibana
+    update_cache: yes
+  become: yes
+
+- name: configure kibana
+  template:
+    src: templates/kibana.yml.j2
+    dest: /etc/kibana/kibana.yml
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+
+- name: delete security plugin
+  command: /usr/share/kibana/bin/kibana-plugin remove opendistro_security --allow-root
+  become: yes
+
+- name: add kibana service to onboot
+  service: name=kibana enabled=yes
+  become: yes
+  
+- name: start kibana service
+  service: name=kibana state=started
+  become: yes

@@ -1,0 +1,9 @@
+input {
+  beats {
+    port => {{ logstash_port }}
+  }
+}
+output {
+  elasticsearch { hosts => ["{{ hostvars['elk1']['ansible_facts']['default_ipv4']['address'] }}:{{ elastic_port }}"]
+  }
+}

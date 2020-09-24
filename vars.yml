@@ -1,0 +1,49 @@
+---
+jdk_centos: java-1.11.0-openjdk
+jdk_ubuntu: openjdk-11-jdk
+
+download: /tmp
+
+
+# ELASTIC
+
+opendistro_apt: https://d3g5vo6xdbdb9a.cloudfront.net/apt
+
+opendistro_apt_key: https://d3g5vo6xdbdb9a.cloudfront.net/GPG-KEY-opendistroforelasticsearch
+
+elastic_oss_deb: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-oss-7.8.0-amd64.deb
+
+elastic_port: 9200
+
+elastic_discovery_seeds: '"elk2"'
+
+elastic_master_nodes: '"elk1"'
+
+elastic_cluster_name: test_cluster
+
+ElasticsearchKibanaUsername: kibanaserver
+ElasticsearchKibanaPassword: kibanaserver
+
+# KIBANA
+
+kibana_port: 5601
+
+
+# LOGSTASH
+
+logstash_url: https://artifacts.elastic.co/downloads/logstash/
+
+# Logstash version (e.g. logstash-7.6.2)
+logstash_version: logstash-7.9.0
+
+# Logstash port (e.g. 5044)
+logstash_port: 5044
+
+
+# FILEBEAT
+
+# Filebeat download URL
+filebeat_url: https://artifacts.elastic.co/downloads/beats/filebeat/
+
+# Filebeat version (e.g. filebeat-7.6.2)
+filebeat_version: filebeat-7.9.1-amd64

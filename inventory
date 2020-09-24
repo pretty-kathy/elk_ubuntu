@@ -1,0 +1,20 @@
+[all:children]
+elastic
+kibana
+logstash
+
+[elastic:children]
+elastic_master
+elastic_datanode
+
+[elastic_master]
+elk1 ansible_host=10.0.0.5
+
+[elastic_datanode]
+elk2 ansible_host=10.0.0.6
+
+[kibana]
+elk3 ansible_host=10.0.0.7
+
+[logstash]
+elk4 ansible_host=10.0.0.8

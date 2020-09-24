@@ -1,0 +1,27 @@
+---
+- name: Include variables
+  include_vars:
+    file: ../../vars.yml
+    
+- name: Download Filebeat Package
+  get_url:
+    url: "{{ filebeat_url }}{{ filebeat_version }}.deb"
+    dest: "{{ download }}"
+  when: ansible_facts['distribution']=="Ubuntu"
+
+- name: Install FileBeat Deb Package
+  become: yes
+  apt:
+    deb: "{{ download }}/{{ filebeat_version }}.deb"
+  when: ansible_facts['distribution']=="Ubuntu"
+
+- name: Create Filebeat Config File
+  template:
+    src: templates/filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+ 
+- name: Start FileBeat Service
+  become: yes
+  service:
+    name: filebeat
+    state: started
